@@ -1,0 +1,16 @@
+---
+- name: Add rofi config file
+  block:
+    - name: Ensure config folder exists
+      ansible.builtin.file:
+        path: "{{ rofi_config_dir }}"
+        state: directory
+        mode: "0750"
+        owner: "{{ ansible_user }}"
+        group: "{{ ansible_user }}"
+
+    - name: Add rofi config file
+      ansible.builtin.template:
+        src: "{{ role_path }}/templates/config.rasi.j2"
+        dest: "{{ rofi_config_file }}"
+        mode: "0750"

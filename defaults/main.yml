@@ -1,0 +1,8 @@
+---
+rofi_config_dir: "{{ ansible_env.HOME }}/.config/rofi"
+rofi_config_file: "{{ rofi_config_dir }}/config.rasi"
+rofi_install_method: "package"
+rofi_theme: "gruvbox-dark"
+rofi_font:
+  size: 10
+  family: "Hack Nerd Font"
