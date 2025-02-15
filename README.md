@@ -6,7 +6,7 @@ An Ansible Role that installs a basic configuration of rofi.
 
 ## Requirements
 
-None.
+Requires a compatible font; Recommended role: `pluggero.nerdfonts`.
 
 ## Role Variables
 
