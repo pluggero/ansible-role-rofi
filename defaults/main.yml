@@ -2,7 +2,7 @@
 rofi_config_dir: "{{ ansible_env.HOME }}/.config/rofi"
 rofi_config_file: "{{ rofi_config_dir }}/config.rasi"
 
-rofi_version: "1.7.8"
+rofi_version: "1.7.9"
 rofi_install_method: "dynamic"
 rofi_force_install: false
 
