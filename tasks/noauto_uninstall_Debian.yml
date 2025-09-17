@@ -4,7 +4,7 @@
     msg: "This role only supports {{ ansible_os_family }} systems that use apt as a package manager."
   when: ansible_pkg_mgr != "apt"
 
-- name: Install rofi via apt
+- name: Uninstall rofi in apt
   block:
     - name: Update apt cache
       ansible.builtin.apt:
@@ -12,10 +12,10 @@
         cache_valid_time: 3600
       become: true
 
-    - name: Ensure rofi is installed
-      ansible.builtin.apt:
+    - name: Remove rofi if it is installed
+      community.general.apt:
         name: "{{ package }}"
-        state: present
+        state: absent
       loop: "{{ rofi_distro_pkgs }}"
       loop_control:
         loop_var: package

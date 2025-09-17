@@ -1,0 +1,18 @@
+---
+- name: Check installed rofi version
+  block:
+    - name: Get installed rofi version
+      ansible.builtin.command:
+        cmd: "rofi -v"
+      ignore_errors: true
+      changed_when: false
+      failed_when: false
+      register: rofi_installed_version_cmd
+
+    - name: Extract only the version into a variable
+      ansible.builtin.set_fact:
+        rofi_installed_version: "{{ (rofi_installed_version_cmd.stdout | regex_search('Version:\\ ([\\d.]+)', '\\1'))[0] | default('') }}"
+
+    - name: Debug installed rofi version
+      ansible.builtin.debug:
+        var: rofi_installed_version
