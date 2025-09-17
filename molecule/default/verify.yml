@@ -1,0 +1,26 @@
+---
+- name: Verify
+  hosts: all
+  gather_facts: true
+
+  vars_files:
+    - ../../defaults/main.yml
+
+  tasks:
+    - name: Check installed version
+      ansible.builtin.include_tasks: "../../tasks/noauto_check_installed_version.yml"
+
+    - name: Assert installed version is correct
+      ansible.builtin.assert:
+        that:
+          - "rofi_installed_version == rofi_version"
+
+    - name: Check rofi config file exists
+      ansible.builtin.stat:
+        path: "{{ rofi_config_file }}"
+      register: rofi_config_stat
+
+    - name: Assert rofi config file exists
+      ansible.builtin.assert:
+        that:
+          - rofi_config_stat.stat.exists
