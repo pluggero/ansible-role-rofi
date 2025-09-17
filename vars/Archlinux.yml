@@ -1,3 +1,25 @@
 ---
+rofi_dep_pkgs:
+  - cairo
+  - gdk-pixbuf2
+  - glib2
+  - libxcb
+  - libxkbcommon
+  - libxkbcommon-x11
+  - pango
+  - startup-notification
+  - xcb-util
+  - xcb-util-cursor
+  - xcb-util-keysyms
+  - xcb-util-wm
+
 rofi_distro_pkgs:
   - rofi
+
+rofi_build_pkgs:
+  - base-devel
+  - bison
+  - flex
+  - meson
+  - ninja
+  - pkgconf

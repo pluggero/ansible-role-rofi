@@ -4,17 +4,17 @@
     msg: "This role only supports {{ ansible_os_family }} systems that use pacman as a package manager."
   when: ansible_pkg_mgr != "pacman"
 
-- name: Install rofi via pacman
+- name: Uninstall rofi from pacman
   block:
     - name: Update pacman cache
       community.general.pacman:
         update_cache: true
       become: true
 
-    - name: Ensure rofi is installed
+    - name: Remove rofi if it is installed
       community.general.pacman:
         name: "{{ package }}"
-        state: present
+        state: absent
       loop: "{{ rofi_distro_pkgs }}"
       loop_control:
         loop_var: package

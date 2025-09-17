@@ -1,0 +1,30 @@
+---
+- name: Uninstall rofi from source
+  block:
+    - name: Find existing rofi folder in {{ rofi_install_dir }}
+      ansible.builtin.find:
+        paths: "{{ rofi_install_dir }}"
+        patterns: "rofi-*"
+        file_type: directory
+      register: rofi_install_folder
+
+    - name: Remove existing rofi installation folder
+      ansible.builtin.file:
+        path: "{{ folder.path }}"
+        state: absent
+      loop: "{{ rofi_install_folder.files }}"
+      loop_control:
+        loop_var: folder
+      become: true
+
+    - name: Remove rofi symlink
+      ansible.builtin.file:
+        path: "/usr/local/bin/rofi"
+        state: absent
+      become: true
+
+    - name: Remove rofi desktop file symlink
+      ansible.builtin.file:
+        path: "/usr/local/share/applications/nvim.desktop"
+        state: absent
+      become: true

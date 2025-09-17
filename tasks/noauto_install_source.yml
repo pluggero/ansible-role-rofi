@@ -1,0 +1,141 @@
+---
+- name: Install rofi from source
+  block:
+    - name: Import installed rofi version check
+      ansible.builtin.include_tasks: noauto_check_installed_version.yml
+      when: rofi_installed_version is not defined
+
+    - name: Force install if the version numbers do not match
+      ansible.builtin.set_fact:
+        rofi_force_install: true
+      when:
+        - rofi_installed_version is defined
+        - rofi_installed_version != rofi_version
+
+    - name: Install rofi from source
+      when: rofi_installed_version is not defined or rofi_force_install
+      block:
+        - name: Uninstall current rofi installation
+          ansible.builtin.include_tasks: noauto_uninstall.yml
+          when: rofi_installed_version is defined and rofi_installed_version != ""
+
+        - name: Install OS-specific build packages
+          ansible.builtin.include_tasks: "{{ task_file }}"
+          with_first_found:
+            - "noauto_install_build_{{ ansible_distribution }}-{{ ansible_distribution_major_version }}.yml"
+            - "noauto_install_build_{{ ansible_os_family }}-{{ ansible_distribution_major_version }}.yml"
+            - "noauto_install_build_{{ ansible_distribution }}.yml"
+            - "noauto_install_build_{{ ansible_os_family }}.yml"
+            - "noauto_install_build_{{ ansible_lsb.id }}.yml"
+          loop_control:
+            loop_var: task_file
+
+        - name: Create install directory
+          ansible.builtin.file:
+            path: "{{ rofi_install_path }}"
+            state: directory
+            mode: "0755"
+            owner: root
+            group: root
+          become: true
+
+        - name: Download rofi source
+          ansible.builtin.get_url:
+            url: "{{ rofi_download_url }}"
+            dest: "{{ rofi_download_dir }}/{{ rofi_archive_name }}.tar.gz"
+            mode: "0644"
+          become: true
+
+        - name: Extract rofi source
+          ansible.builtin.unarchive:
+            src: "{{ rofi_download_dir }}/{{ rofi_archive_name }}.tar.gz"
+            dest: "{{ rofi_download_dir }}"
+            remote_src: true
+            creates: "{{ rofi_download_dir }}/{{ rofi_archive_name }}"
+          become: true
+
+        - name: Clean up any previous failed build directory
+          ansible.builtin.file:
+            path: "{{ rofi_download_dir }}/{{ rofi_archive_name }}/build"
+            state: absent
+          become: true
+          when: rofi_force_install
+
+        - name: Configure rofi with meson
+          ansible.builtin.command:
+            cmd: "meson setup build --prefix={{ rofi_install_path }}"
+            chdir: "{{ rofi_download_dir }}/{{ rofi_archive_name }}"
+            creates: "{{ rofi_download_dir }}/{{ rofi_archive_name }}/build/build.ninja"
+          register: meson_result
+          become: true
+          failed_when: false
+
+        - name: Build rofi with ninja
+          ansible.builtin.command:
+            cmd: "ninja -C build"
+            chdir: "{{ rofi_download_dir }}/{{ rofi_archive_name }}"
+            creates: "{{ rofi_download_dir }}/{{ rofi_archive_name }}/build/rofi"
+          become: true
+
+        - name: Install rofi
+          ansible.builtin.command:
+            cmd: "ninja -C build install"
+            chdir: "{{ rofi_download_dir }}/{{ rofi_archive_name }}"
+            creates: "{{ rofi_install_path }}/bin/rofi"
+          become: true
+
+        - name: Remove build directory
+          ansible.builtin.file:
+            path: "{{ rofi_download_dir }}/{{ rofi_archive_name }}"
+            state: absent
+          become: true
+
+        - name: Create rofi symlink
+          ansible.builtin.file:
+            src: "{{ rofi_install_path }}/bin/rofi"
+            dest: "/usr/local/bin/rofi"
+            state: link
+            force: true
+            mode: "0755"
+            owner: root
+            group: root
+          become: true
+
+        - name: Remove archive
+          ansible.builtin.file:
+            path: "{{ rofi_download_dir }}/{{ rofi_archive_name }}.tar.gz"
+            state: absent
+          become: true
+
+        - name: Remove OS-specific build packages
+          ansible.builtin.include_tasks: "{{ task_file }}"
+          with_first_found:
+            - "noauto_uninstall_build_{{ ansible_distribution }}-{{ ansible_distribution_major_version }}.yml"
+            - "noauto_uninstall_build_{{ ansible_os_family }}-{{ ansible_distribution_major_version }}.yml"
+            - "noauto_uninstall_build_{{ ansible_distribution }}.yml"
+            - "noauto_uninstall_build_{{ ansible_os_family }}.yml"
+            - "noauto_uninstall_build_{{ ansible_lsb.id }}.yml"
+          loop_control:
+            loop_var: task_file
+
+    - name: Create desktop file
+      block:
+        - name: Ensure desktop file directory exists
+          ansible.builtin.file:
+            path: "/usr/local/share/applications"
+            state: directory
+            mode: "0755"
+            owner: root
+            group: root
+          become: true
+
+        - name: Create desktop file symlink
+          ansible.builtin.file:
+            src: "{{ rofi_install_path }}/share/applications/rofi.desktop"
+            dest: "/usr/local/share/applications/rofi.desktop"
+            state: link
+            force: true
+            mode: "0644"
+            owner: root
+            group: root
+          become: true

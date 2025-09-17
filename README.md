@@ -12,6 +12,24 @@ Requires a compatible font; Recommended role: `pluggero.nerdfonts`.
 
 Available variables are listed below, along with default values (see `defaults/main.yml`):
 
+```yaml
+rofi_version: "x.x"
+```
+
+The version of rofi to install can be defined in the variable `rofi_version`.
+
+```yaml
+rofi_install_method: "dynamic"
+```
+
+The method used to install rofi can be defined in the variable `rofi_install_method`.
+The following methods are available:
+
+- `source`: Installs rofi from source
+- `package`: Installs rofi from the package manager of the distribution
+  - **NOTE**: This method installs the latest version available in the package manager and not the version defined in `rofi_version`.
+- `dynamic`: Installs rofi from package manager if available in the correct version, otherwise installs from source
+
 ## Dependencies
 
 None.

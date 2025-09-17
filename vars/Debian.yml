@@ -1,3 +1,29 @@
 ---
+rofi_dep_pkgs: []
+
+
 rofi_distro_pkgs:
   - rofi
+
+rofi_build_pkgs:
+  - bison
+  - build-essential
+  - flex
+  - libcairo2-dev
+  - libgdk-pixbuf2.0-dev
+  - libglib2.0-dev
+  - libpango1.0-dev
+  - libstartup-notification0-dev
+  - libxcb-cursor-dev
+  - libxcb-ewmh-dev
+  - libxcb-icccm4-dev
+  - libxcb-keysyms1-dev
+  - libxcb-randr0-dev
+  - libxcb-util-dev
+  - libxcb-xinerama0-dev
+  - libxcb-xkb-dev
+  - libxkbcommon-dev
+  - libxkbcommon-x11-dev
+  - meson
+  - ninja-build
+  - pkg-config
