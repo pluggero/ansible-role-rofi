@@ -9,7 +9,7 @@ rofi_build_pkgs:
   - build-essential
   - flex
   - libcairo2-dev
-  - libgdk-pixbuf2.0-dev
+  - libgdk-pixbuf-xlib-2.0-dev
   - libglib2.0-dev
   - libpango1.0-dev
   - libstartup-notification0-dev
