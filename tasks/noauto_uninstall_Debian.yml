@@ -13,7 +13,7 @@
       become: true
 
     - name: Remove rofi if it is installed
-      community.general.apt:
+      ansible.builtin.apt:
         name: "{{ package }}"
         state: absent
       loop: "{{ rofi_distro_pkgs }}"
