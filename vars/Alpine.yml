@@ -10,7 +10,9 @@ rofi_dep_pkgs:
   - startup-notification
   - xcb-util
   - xcb-util-cursor
+  - xcb-util-keysyms
   - xcb-util-wm
+  - pkgconf
 
 rofi_distro_pkgs:
   - rofi
@@ -18,18 +20,17 @@ rofi_distro_pkgs:
 rofi_build_pkgs:
   - bison
   - build-base
-  - cairo-dev
-  - check-dev
   - flex
-  - gdk-pixbuf-dev
-  - glib-dev
-  - libxcb-dev
-  - libxkbcommon-dev
   - meson
   - ninja
   - pango-dev
-  - pkgconf
+  - gdk-pixbuf-dev
+  - cairo-dev
+  - glib-dev
   - startup-notification-dev
+  - libxkbcommon-dev
+  - xcb-util-keysyms-dev
+  - xcb-util-wm-dev
   - xcb-util-cursor-dev
   - xcb-util-dev
-  - xcb-util-wm-dev
+  - libxcb-dev
