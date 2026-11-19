@@ -10,7 +10,8 @@ Requires a compatible font; Recommended role: `pluggero.nerdfonts`.
 
 ## Role Variables
 
-Available variables are listed below, along with default values (see `defaults/main.yml`):
+Available variables are listed below, along with default values (see `defaults/main.yml`).
+Inputs are validated against `meta/argument_specs.yml`.
 
 ```yaml
 rofi_version: "x.x"

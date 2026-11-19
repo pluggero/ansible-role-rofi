@@ -9,13 +9,19 @@
     {
       "matchManagers": ["github-actions", "pip_requirements"],
       "automerge": true,
-      "automergeType": "pr"
+      "automergeType": "pr",
+      "minimumReleaseAge": "7 days"
     },
     {
       "matchManagers": ["custom.regex"],
       "matchDepNames": ["python/cpython"],
       "automerge": true,
-      "automergeType": "pr"
+      "automergeType": "pr",
+      "minimumReleaseAge": "7 days"
+    },
+    {
+      "matchDatasources": ["github-runners"],
+      "automerge": false
     },
     {
       "matchManagers": ["custom.regex", "ansible-galaxy"],
@@ -41,14 +47,22 @@
   "assignees": [
     "pluggero"
   ],
+  "osvVulnerabilityAlerts": true,
+  "vulnerabilityAlerts": {
+    "minimumReleaseAge": null,
+    "automerge": false,
+    "labels": ["security"]
+  },
   "customManagers": [
     {
       "customType": "regex",
       "managerFilePatterns": [
-        "/^defaults/main\\.yml$/"
+        "/^defaults/main\\.yml$/",
+        "/^meta/argument_specs\\.yml$/"
       ],
       "matchStrings": [
-        "rofi_version:\\s+\"(?<currentValue>[\\d\\.]+)\""
+        "rofi_version:\\s+\"(?<currentValue>[\\d\\.]+)\"",
+        "\\n {6}rofi_version:\\n(?: {8}[^\\n]*\\n)*? {8}default:\\s*\"(?<currentValue>[\\d\\.]+)\""
       ],
       "datasourceTemplate": "github-releases",
       "depNameTemplate": "davatorium/rofi",
