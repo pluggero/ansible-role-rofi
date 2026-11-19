@@ -37,6 +37,7 @@ rofi_meson_options:
 ```
 
 Options passed to `meson setup` for source builds. By default the build fails if Wayland or xcb dependencies are missing.
+Build packages are removed after a source build, except those that were already installed.
 
 ## Dependencies
 
