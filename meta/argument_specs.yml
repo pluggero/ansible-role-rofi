@@ -1,0 +1,68 @@
+---
+argument_specs:
+  main:
+    short_description: Installs a basic configuration of rofi.
+    author: pluggero
+    options:
+      rofi_version:
+        type: str
+        description: Version of rofi to install.
+        default: "2.0.0"
+      rofi_install_method:
+        type: str
+        description: How to install rofi.
+        choices:
+          - dynamic
+          - package
+          - source
+        default: dynamic
+      rofi_force_install:
+        type: bool
+        description: Reinstall rofi even if it is already installed.
+        default: false
+      rofi_download_url:
+        type: str
+        description: Source tarball URL. Defaults to the GitHub release of O(rofi_version).
+      rofi_archive_name:
+        type: str
+        description: Source archive name without extension. Defaults to C(rofi-<rofi_version>).
+      rofi_download_dir:
+        type: str
+        description: Directory for downloading and building the source.
+        default: /tmp
+      rofi_install_dir:
+        type: str
+        description: Base directory for source installs.
+        default: /opt
+      rofi_install_path:
+        type: str
+        description: Install prefix for source builds. Defaults to C(<rofi_install_dir>/rofi-<rofi_version>).
+      rofi_meson_options:
+        type: list
+        elements: str
+        description: Options passed to C(meson setup) for source builds.
+        default:
+          - "-Dwayland=enabled"
+          - "-Dxcb=enabled"
+      rofi_config_dir:
+        type: str
+        description: rofi config directory. Defaults to C(~/.config/rofi).
+      rofi_config_file:
+        type: str
+        description: rofi config file. Defaults to C(<rofi_config_dir>/config.rasi).
+      rofi_theme:
+        type: str
+        description: Theme set in the rofi config.
+        default: gruvbox-dark
+      rofi_font:
+        type: dict
+        description: Font set in the rofi config.
+        options:
+          size:
+            type: int
+            description: Font size.
+            default: 10
+          family:
+            type: str
+            description: Font family.
+            default: Hack Nerd Font
