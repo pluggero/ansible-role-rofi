@@ -13,6 +13,8 @@ rofi_dep_pkgs:
   - xcb-util-keysyms
   - xcb-util-wm
   - pkgconf
+  - wayland-libs-client
+  - wayland-libs-cursor
 
 rofi_distro_pkgs:
   - rofi
@@ -34,3 +36,5 @@ rofi_build_pkgs:
   - xcb-util-cursor-dev
   - xcb-util-dev
   - libxcb-dev
+  - wayland-dev
+  - wayland-protocols

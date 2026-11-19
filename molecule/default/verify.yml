@@ -19,6 +19,45 @@
         that:
           - "rofi_installed_version == rofi_version"
 
+    - name: Check if rofi was built from source
+      ansible.builtin.stat:
+        path: /usr/local/bin/rofi
+      register: rofi_source_bin
+
+    - name: Verify display backends of source build
+      when: rofi_source_bin.stat.exists
+      block:
+        - name: Get rofi help output
+          ansible.builtin.command:
+            cmd: rofi -h
+          changed_when: false
+          failed_when: false
+          register: rofi_help
+
+        - name: Extract display backends section
+          ansible.builtin.set_fact:
+            rofi_backends: "{{ (rofi_help.stdout ~ '\n' ~ rofi_help.stderr) | regex_search('Display backends:\\n(?:[ \\t]+\\S.*\\n?)+') | default('', true) }}"
+
+        - name: Assert xcb and wayland backends are enabled
+          ansible.builtin.assert:
+            that:
+              - rofi_backends is search('xcb')
+              - rofi_backends is search('wayland')
+              - rofi_backends is not search('(xcb|wayland)\\S*\\s*disabled')
+            fail_msg: "Expected xcb and wayland backends, got: {{ rofi_backends }}"
+
+        - name: Get linked libraries
+          ansible.builtin.command:
+            cmd: ldd /usr/local/bin/rofi
+          changed_when: false
+          register: rofi_ldd
+
+        - name: Assert wayland client library is linked
+          ansible.builtin.assert:
+            that:
+              - rofi_ldd.stdout is search('libwayland-client')
+              - rofi_ldd.stdout is not search('not found')
+
     - name: Check rofi config file exists
       ansible.builtin.stat:
         path: "{{ rofi_config_file }}"

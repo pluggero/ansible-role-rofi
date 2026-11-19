@@ -11,6 +11,10 @@ rofi_archive_name: "rofi-{{ rofi_version }}"
 rofi_download_dir: "/tmp"
 rofi_install_dir: "/opt"
 rofi_install_path: "{{ rofi_install_dir }}/rofi-{{ rofi_version }}"
+# Fail the build if a backend's dependencies are missing
+rofi_meson_options:
+  - "-Dwayland=enabled"
+  - "-Dxcb=enabled"
 
 rofi_theme: "gruvbox-dark"
 rofi_font:

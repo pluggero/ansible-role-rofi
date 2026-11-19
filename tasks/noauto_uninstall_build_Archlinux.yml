@@ -15,7 +15,7 @@
       community.general.pacman:
         name: "{{ package }}"
         state: absent
-      loop: "{{ rofi_build_pkgs }}"
+      loop: "{{ rofi_build_pkgs_to_remove }}"
       loop_control:
         loop_var: package
       become: true

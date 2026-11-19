@@ -19,6 +19,14 @@
           ansible.builtin.include_tasks: noauto_uninstall.yml
           when: rofi_installed_version is defined and rofi_installed_version != ""
 
+        - name: Gather installed packages
+          ansible.builtin.package_facts:
+            manager: auto
+
+        - name: Determine build packages not yet installed
+          ansible.builtin.set_fact:
+            rofi_build_pkgs_to_remove: "{{ rofi_build_pkgs | reject('in', ansible_facts.packages) | list }}"
+
         - name: Install OS-specific build packages
           ansible.builtin.include_tasks: "{{ task_file }}"
           with_first_found:
@@ -63,12 +71,10 @@
 
         - name: Configure rofi with meson
           ansible.builtin.command:
-            cmd: "meson setup build --prefix={{ rofi_install_path }}"
+            cmd: "meson setup build --prefix={{ rofi_install_path }} {{ rofi_meson_options | join(' ') }}"
             chdir: "{{ rofi_download_dir }}/{{ rofi_archive_name }}"
             creates: "{{ rofi_download_dir }}/{{ rofi_archive_name }}/build/build.ninja"
-          register: meson_result
           become: true
-          failed_when: false
 
         - name: Build rofi with ninja
           ansible.builtin.command:

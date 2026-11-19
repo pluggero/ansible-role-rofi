@@ -1,5 +1,7 @@
 ---
-rofi_dep_pkgs: []
+rofi_dep_pkgs:
+  - libwayland-client0
+  - libwayland-cursor0
 
 rofi_distro_pkgs:
   - rofi
@@ -23,6 +25,9 @@ rofi_build_pkgs:
   - libxcb-xkb-dev
   - libxkbcommon-dev
   - libxkbcommon-x11-dev
+  - libwayland-dev
+  - libwayland-bin
+  - wayland-protocols
   - meson
   - ninja-build
   - pkg-config
