@@ -5,6 +5,7 @@ rofi_config_file: "{{ rofi_config_dir }}/config.rasi"
 rofi_version: "2.0.0"
 rofi_install_method: "dynamic"
 rofi_force_install: false
+rofi_remove_build_pkgs: true
 
 rofi_download_url: "https://github.com/davatorium/rofi/releases/download/{{ rofi_version }}/{{ rofi_archive_name }}.tar.gz"
 rofi_archive_name: "rofi-{{ rofi_version }}"

@@ -123,6 +123,9 @@
             - "{{ role_path }}/tasks/noauto_uninstall_build_{{ ansible_lsb.id }}.yml"
           loop_control:
             loop_var: task_file
+          when:
+            - rofi_remove_build_pkgs
+            - rofi_build_pkgs_to_remove | length > 0
 
     - name: Create desktop file
       block:
