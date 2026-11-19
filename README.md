@@ -30,6 +30,14 @@ The following methods are available:
   - **NOTE**: This method installs the latest version available in the package manager and not the version defined in `rofi_version`.
 - `dynamic`: Installs rofi from package manager if available in the correct version, otherwise installs from source
 
+```yaml
+rofi_meson_options:
+  - "-Dwayland=enabled"
+  - "-Dxcb=enabled"
+```
+
+Options passed to `meson setup` for source builds. By default the build fails if Wayland or xcb dependencies are missing.
+
 ## Dependencies
 
 None.

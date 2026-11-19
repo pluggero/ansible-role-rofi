@@ -12,6 +12,7 @@ rofi_dep_pkgs:
   - xcb-util-cursor
   - xcb-util-keysyms
   - xcb-util-wm
+  - wayland
 
 rofi_distro_pkgs:
   - rofi
@@ -23,3 +24,4 @@ rofi_build_pkgs:
   - meson
   - ninja
   - pkgconf
+  - wayland-protocols
